@@ -1,33 +1,21 @@
-import React, {useState} from 'react'
-import Bookshelves from './Bookshelves'
+import React from 'react'
 import CreateBookshelf from './CreateBookshelf'
+import EditBookshelf from './EditBookshelf'
+import Bookshelf from './Bookshelf'
 
-const tempBooks = [
-  {
-    title: 'Moby Dick',
-    image: 'src',
-    author: 'Herman Melville',
-    isbn: '123123123455'
-  },
-  {
-    title: 'Master and Margarita',
-    image: 'src',
-    author: 'Michail Bulgakov',
-    isbn: '1231321314141'
-  },
-  {
-    title: 'Samvel',
-    image: 'src',
-    author: 'Raffi',
-    isbn: '5645621341l098'
-  }
-]
+import {
+  BrowserRouter as Router,
+  Route,
+} from 'react-router-dom'
 
 export default () => {
   return (
-    <>
-      <CreateBookshelf />
-      <Bookshelves books={tempBooks} />
-    </>
+    <div className="ui container" style={{ marginTop: '20px'}}>
+      <Router>
+        <Route path="/" exact component={CreateBookshelf} />
+        <Route path="/shelf/:name" component={Bookshelf} />
+        <Route path="/edit" component={EditBookshelf} />
+      </Router>
+    </div>
   )
 }
