@@ -1,8 +1,7 @@
 import React from 'react'
 import CreateBookshelf from './CreateBookshelf'
-import EditBookshelf from './EditBookshelf'
 import Bookshelf from './Bookshelf'
-
+import AddBooks from './AddBooks'
 import {
   BrowserRouter as Router,
   Route,
@@ -13,8 +12,11 @@ export default () => {
     <div className="ui container" style={{ marginTop: '20px'}}>
       <Router>
         <Route path="/" exact component={CreateBookshelf} />
-        <Route path="/shelf/:name" component={Bookshelf} />
-        <Route path="/edit" component={EditBookshelf} />
+        <Route
+          path="/shelf/:id"
+          component={Bookshelf}
+        />
+        <Route path="/addbooks/:id" component={AddBooks} />
       </Router>
     </div>
   )

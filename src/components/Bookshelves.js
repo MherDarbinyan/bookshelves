@@ -2,21 +2,21 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const Bookshelves = (props) => {
-  console.log(props)
-  const {bookshelves} = props
-
-  // useEffect(()=> {
-  //
-  // })
+  const {bookshelves, deleteBookshelf} = props
 
   const renderBookshelves = bookshelves.map(bookshelf => {
     return (
-      <div key={bookshelf}>
-      {bookshelf}
-      <Link to={`/shelf/${bookshelf}`}>
+      <div key={bookshelf.id}>
+      {bookshelf.name}
+      <Link to={`/shelf/${bookshelf.id}`}>
         <button className="ui primary basic button">View</button>
       </Link>
-      <button className="ui negative basic button">Delete</button>
+      <button
+        className="ui negative basic button"
+        onClick={()=>deleteBookshelf(bookshelf.id)}
+      >
+        Delete
+      </button>
       </div>
     )
   })
