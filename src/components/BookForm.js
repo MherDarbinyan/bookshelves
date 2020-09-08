@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import LocalStorageService from '../services/LocalStorageService'
+
 const BookForm = ({shelfId}) => {
+
+  const itemName = "book"
 
   const [bookInfo, setBookInfo] = useState({
     title: '',
@@ -18,18 +22,8 @@ const BookForm = ({shelfId}) => {
     })
   }
 
-  const getBookFromLS = () => {
-    const getBookshelf = localStorage.getItem("book")
-    let arr = []
-    if (getBookshelf) {
-      arr = JSON.parse(getBookshelf)
-    }
-    return arr
-  }
-
   const handleAddNewBook = () => {
-    const arr = getBookFromLS()
-    localStorage.setItem("book", JSON.stringify([...arr, bookInfo]))
+    LocalStorageService.setItem(itemName, bookInfo)
   }
 
     return (

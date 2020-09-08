@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
+import LocalStorageService from '../services/LocalStorageService'
 import axios from 'axios'
 
 const BookSearch = ({shelfId}) => {
 
   const [query, setQuery] = useState('')
   const [result, setResult] = useState([])
+
+  const itemName = "book"
 
   useEffect( () => {
     if (!query) {
@@ -17,14 +20,7 @@ const BookSearch = ({shelfId}) => {
     search()
   }, [query])
 
-  const getBookFromLS = () => {
-    const getBookshelf = localStorage.getItem("book")
-    let arr = []
-    if (getBookshelf) {
-      arr = JSON.parse(getBookshelf)
-    }
-    return arr
-  }
+
 
   const handleAddNewBook = (book) => {
     const newBook = {
@@ -34,8 +30,9 @@ const BookSearch = ({shelfId}) => {
       author: book.author,
       isbn: book.isbn13
     }
-    const arr = getBookFromLS()
-    localStorage.setItem("book", JSON.stringify([...arr, newBook]))
+    LocalStorageService.setItem(itemName, newBook)
+    setQuery('')
+    setResult([])
   }
 
   const renderBooks = result.map(book => {

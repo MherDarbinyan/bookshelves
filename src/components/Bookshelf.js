@@ -1,52 +1,47 @@
 import React, { useState, useEffect } from 'react'
+import LocalStorageService from '../services/LocalStorageService'
 import { Link } from 'react-router-dom'
 
 const Bookshelf = (props) => {
-  console.log(localStorage);
+
+  const itemName = "book"
+  const itemCollection = "bookshelf"
+  const shelfId = props.match.params.id
+
   const [bookshelf, setBookshelf] = useState({})
   const [books, setBooks] = useState([])
 
-  const shelfId = props.match.params.id
-
   useEffect(()=> {
-      const arr = getBookFromLS().filter(book => book.shelfId === shelfId)
-      console.log("arr", arr)
+      const arr = LocalStorageService.getItem(itemName).filter(book => book.shelfId === shelfId)
       setBooks(arr)
   }, [])
 
   useEffect(()=>{
-    const getBookshelf = localStorage.getItem("bookshelf")
-    let arr = []
-    if (getBookshelf) {
-      arr = JSON.parse(getBookshelf)
-    }
-    const findBook =  arr.find(getBookshelf => getBookshelf.id === shelfId)
+    const getBookshelf = LocalStorageService.getItem(itemCollection)
+    const findBook =  getBookshelf.find(getBookshelf => getBookshelf.id === shelfId)
     setBookshelf(findBook)
   }, [])
 
 
-  const getBookFromLS = () => {
-    const getBookshelf = localStorage.getItem("book")
-    let arr = []
-    if (getBookshelf) {
-      arr = JSON.parse(getBookshelf)
-    }
-    return arr
-  }
-
   const deleteBook = (isbn) => {
-    const deleted = getBookFromLS().filter(book => isbn !== book.isbn)
-    localStorage.setItem("book", JSON.stringify(deleted))
+    const deleted = books.filter(book => isbn !== book.isbn)
+    LocalStorageService.replace(itemName, deleted)
     setBooks(deleted.filter(book => book.shelfId === shelfId))
   }
 
   const renderBooks = books.map(book => {
     return (
-      <div key={book.isbn}>
-        <p>{book.title}</p>
-        <p>Author: {book.author}</p>
-        <img src={book.image} alt={book.title} />
+      <div key={book.isbn} className="ui divided items">
+        <div className="item">
+        <div className="ui tiny image">
+          <img src={book.image} alt={book.title} />
+        </div>
+        <div className="middle aligned content">
+          <h2>{book.title}</h2>
+          <h3>Author: {book.author}</h3>
+        </div>
         <button onClick={()=> deleteBook(book.isbn)}>Delete book</button>
+        </div>
       </div>
     )
   })

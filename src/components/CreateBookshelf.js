@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Bookshelves from './Bookshelves'
+import LocalStorageService from '../services/LocalStorageService'
+
 import shortid from 'shortid'
 
 const CreateBookshelf = () => {
@@ -7,33 +9,25 @@ const CreateBookshelf = () => {
   const [bookshelf, setBookshelf] = useState('')
   const [bookshelfArray, setBookshelfArray] = useState([])
 
-  const getBookshelvesFromLS = () => {
-    const getBookshelf = localStorage.getItem("bookshelf")
-    let arr = []
-    if (getBookshelf) {
-      arr = JSON.parse(getBookshelf)
-    }
-    return arr
-  }
+  const itemName = "bookshelf"
 
   const handleAddNewBookshelf = () => {
     const bookshelvesObj = {
       id: shortid.generate(),
       name: bookshelf
     }
-    const arr = getBookshelvesFromLS()
-    localStorage.setItem("bookshelf", JSON.stringify([...arr, bookshelvesObj]))
+    LocalStorageService.setItem(itemName, bookshelvesObj)
     setBookshelfArray(bookshelfArray => [...bookshelfArray, bookshelvesObj])
   }
 
   useEffect(()=> {
-      const arr = getBookshelvesFromLS()
+      const arr = LocalStorageService.getItem(itemName)
       setBookshelfArray(arr)
   }, [])
 
   const handleRemoveBookshelf = (id) => {
     const filtered = bookshelfArray.filter(bookshelf => id !== bookshelf.id)
-    localStorage.setItem("bookshelf", JSON.stringify(filtered))
+    LocalStorageService.replace(itemName, filtered)
     setBookshelfArray(filtered)
   }
 
