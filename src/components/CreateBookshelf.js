@@ -12,12 +12,16 @@ const CreateBookshelf = () => {
   const itemName = "bookshelf"
 
   const handleAddNewBookshelf = () => {
+    if(bookshelf === ''){
+      return
+    }
     const bookshelvesObj = {
       id: shortid.generate(),
       name: bookshelf
     }
     LocalStorageService.setItem(itemName, bookshelvesObj)
     setBookshelfArray(bookshelfArray => [...bookshelfArray, bookshelvesObj])
+
   }
 
   useEffect(()=> {
@@ -34,12 +38,19 @@ const CreateBookshelf = () => {
   return (
     <div className="ui form">
       <div className="field">
-        <label>Create a bookshelf</label>
-        <input
-          className="input"
-          onChange={e => setBookshelf(e.target.value)}
-        />
-        <button onClick={handleAddNewBookshelf}>Create</button>
+        <h1>Create a bookshelf</h1>
+        <div style={{display: 'flex'}}>
+          <input
+            className="ui input"
+            onChange={e => setBookshelf(e.target.value)}
+          />
+          <button
+            className="ui button"
+            onClick={handleAddNewBookshelf}
+          >
+            Create
+          </button>
+        </div>
       </div>
       <Bookshelves
         bookshelves={bookshelfArray}

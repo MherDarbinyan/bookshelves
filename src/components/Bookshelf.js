@@ -33,28 +33,40 @@ const Bookshelf = (props) => {
     return (
       <div key={book.isbn} className="ui divided items">
         <div className="item">
-        <div className="ui tiny image">
-          <img src={book.image} alt={book.title} />
+        <div className="ui middle aligned tiny image">
+          <img className="ui small left floated image" src={book.image} alt={book.title} />
         </div>
         <div className="middle aligned content">
           <h2>{book.title}</h2>
           <h3>Author: {book.author}</h3>
         </div>
-        <button onClick={()=> deleteBook(book.isbn)}>Delete book</button>
         </div>
+        <button
+          className="ui button"
+          onClick={()=> deleteBook(book.isbn)}
+        >
+          Delete a book
+        </button>
       </div>
     )
   })
 
   return (
     <div>
-      <div>{bookshelf.name}</div>
+      <h2>{bookshelf.name}</h2>
       {renderBooks}
+      <div>
       <Link to={`/addbooks/${shelfId}`}>
         <button className="ui primary basic button">
           Add books
         </button>
       </Link>
+      <Link to="/">
+        <button className="ui positive basic button">
+          Back to shelf
+        </button>
+      </Link>
+      </div>
     </div>
   )
 }

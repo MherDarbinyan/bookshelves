@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import LocalStorageService from '../services/LocalStorageService'
 
 const BookForm = ({shelfId}) => {
@@ -23,6 +22,10 @@ const BookForm = ({shelfId}) => {
   }
 
   const handleAddNewBook = () => {
+    const {title, image, author, isbn} = bookInfo
+    if (title === '' && image === '' && author === '' && isbn === '') {
+      return
+    }
     LocalStorageService.setItem(itemName, bookInfo)
   }
 
@@ -31,13 +34,13 @@ const BookForm = ({shelfId}) => {
         <form className="ui form">
           <div className="field">
             <label>Title</label>
-            <input type="text" name="title" onChange={handleChange} />
+            <input type="text" name="title" onChange={handleChange} required/>
             <label>Image</label>
-            <input type="text" name="image" onChange={handleChange}/>
+            <input type="text" name="image" onChange={handleChange} required/>
             <label>Author Name</label>
-            <input type="text" name="author" onChange={handleChange}/>
+            <input type="text" name="author" onChange={handleChange} required/>
             <label>ISBN</label>
-            <input type="number" name="isbn" onChange={handleChange}/>
+            <input type="number" name="isbn" onChange={handleChange} required/>
           </div>
           <button
             type="submit"
@@ -47,13 +50,6 @@ const BookForm = ({shelfId}) => {
             Add Book
           </button>
         </form>
-        <div>
-          <Link to={`/shelf/${shelfId}`}>
-            <button className="ui positive basic button">
-              Back to shelf
-            </button>
-          </Link>
-        </div>
       </div>
     )
 }

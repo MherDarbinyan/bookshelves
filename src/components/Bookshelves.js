@@ -6,9 +6,9 @@ const Bookshelves = (props) => {
 
   const renderBookshelves = bookshelves.map(bookshelf => {
     return (
-      <div key={bookshelf.id} className="ui divided items">
+      <div key={bookshelf.id} className="ui relaxed divided list">
         <div className="item">
-        {bookshelf.name}
+          <h3>{bookshelf.name}</h3>
         <Link to={`/shelf/${bookshelf.id}`}>
           <button className="ui primary basic button">View</button>
         </Link>
@@ -18,6 +18,7 @@ const Bookshelves = (props) => {
         >
           Delete
         </button>
+        <div class="ui divider"></div>
         </div>
       </div>
     )
@@ -26,7 +27,7 @@ const Bookshelves = (props) => {
   return (
     <div className="ui container">
       <h2>My Bookshelves</h2>
-      <h3>{renderBookshelves}</h3>
+      {renderBookshelves}
     </div>
   )
 }

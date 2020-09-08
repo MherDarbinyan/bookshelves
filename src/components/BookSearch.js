@@ -38,10 +38,13 @@ const BookSearch = ({shelfId}) => {
   const renderBooks = result.map(book => {
     return (
       <div
+        className="ui divided items"
+        style={{cursor: 'pointer'}}
         key={book.isbn13}
         onClick={()=> handleAddNewBook(book)}
       >
         {book.title}
+        <div class="ui divider"></div>
       </div>
     )
   })

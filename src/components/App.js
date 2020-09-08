@@ -12,9 +12,7 @@ export default () => {
     <div className="ui container" style={{ marginTop: '20px'}}>
       <Router>
         <Route path="/" exact component={CreateBookshelf} />
-        <Route
-          path="/shelf/:id"
-          component={Bookshelf}
+        <Route path="/shelf/:id" component={Bookshelf}
         />
         <Route path="/addbooks/:id" component={AddBooks} />
       </Router>
