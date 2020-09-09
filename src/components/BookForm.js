@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import LocalStorageService from '../services/LocalStorageService'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { addBook } from '../actions'
 
 const BookForm = (props) => {
-
+  const dispatch = useDispatch()
   const itemName = "book"
 
   const [bookInfo, setBookInfo] = useState({
@@ -28,8 +28,8 @@ const BookForm = (props) => {
     if (title === '' && image === '' && author === '' && isbn === '') {
       return
     }
-    props.addBook(bookInfo)
-    // LocalStorageService.setItem(itemName, bookInfo)
+    dispatch(addBook(bookInfo))
+    LocalStorageService.setItem(itemName, bookInfo)
   }
 
     return (
@@ -57,10 +57,4 @@ const BookForm = (props) => {
     )
 }
 
-const mapStateToProps = state => {
-  return {
-    books: state.books
-  }
-}
-
-export default connect(mapStateToProps,{addBook})(BookForm)
+export default BookForm

@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import Bookshelves from './Bookshelves'
-import LocalStorageService from '../services/LocalStorageService'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addBookshelf, deleteBookshelf } from '../actions'
 
 import shortid from 'shortid'
 
-const CreateBookshelf = (props) => {
-  console.log(localStorage)
-  console.log("create bookshelves->", props.bookshelves);
+const CreateBookshelf = () => {
+  const bookshelves = useSelector(state=>state.bookshelves)
+  const dispatch = useDispatch()
 
   const [bookshelf, setBookshelf] = useState('')
   const [bookshelfArray, setBookshelfArray] = useState([])
-
-  const itemName = "bookshelf"
 
   const handleAddNewBookshelf = () => {
     if(bookshelf === ''){
@@ -23,20 +20,17 @@ const CreateBookshelf = (props) => {
       id: shortid.generate(),
       name: bookshelf
     }
-    props.addBookshelf(bookshelvesObj)
-    LocalStorageService.setItem(itemName, bookshelvesObj)
+    dispatch(addBookshelf(bookshelvesObj))
     setBookshelfArray(bookshelfArray => [...bookshelfArray, bookshelvesObj])
 
   }
 
   useEffect(()=> {
-      const arr = LocalStorageService.getItem(itemName)
-      setBookshelfArray(arr)
+      setBookshelfArray(bookshelves)
   }, [])
 
   const handleRemoveBookshelf = (bookshelf, id) => {
-    const filtered = props.deleteBookshelf(bookshelf, id)
-    LocalStorageService.replace(itemName, filtered)
+    const filtered = dispatch(deleteBookshelf(bookshelf, id))
     setBookshelfArray(filtered)
   }
 
@@ -65,16 +59,4 @@ const CreateBookshelf = (props) => {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    bookshelves: state.bookshelves
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  {
-    addBookshelf,
-    deleteBookshelf
-  }
-)(CreateBookshelf)
+export default CreateBookshelf
