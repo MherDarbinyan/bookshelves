@@ -44,7 +44,7 @@ const BookSearch = ({shelfId}) => {
         onClick={()=> handleAddNewBook(book)}
       >
         {book.title}
-        <div class="ui divider"></div>
+        <div className="ui divider"></div>
       </div>
     )
   })

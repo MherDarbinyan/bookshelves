@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import LocalStorageService from '../services/LocalStorageService'
+import { connect } from 'react-redux'
+import { addBook } from '../actions'
 
-const BookForm = ({shelfId}) => {
+const BookForm = (props) => {
 
   const itemName = "book"
 
@@ -10,7 +12,7 @@ const BookForm = ({shelfId}) => {
     image: '',
     author: '',
     isbn: '',
-    shelfId
+    shelfId: props.shelfId
   })
 
   const handleChange = (e) => {
@@ -26,7 +28,8 @@ const BookForm = ({shelfId}) => {
     if (title === '' && image === '' && author === '' && isbn === '') {
       return
     }
-    LocalStorageService.setItem(itemName, bookInfo)
+    props.addBook(bookInfo)
+    // LocalStorageService.setItem(itemName, bookInfo)
   }
 
     return (
@@ -54,4 +57,10 @@ const BookForm = ({shelfId}) => {
     )
 }
 
-export default BookForm
+const mapStateToProps = state => {
+  return {
+    books: state.books
+  }
+}
+
+export default connect(mapStateToProps,{addBook})(BookForm)

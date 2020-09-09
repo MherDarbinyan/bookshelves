@@ -1,10 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { deleteBookshelf } from '../actions'
 
 const Bookshelves = (props) => {
-  const {bookshelves, deleteBookshelf} = props
+  console.log("created bookshelves->",props);
 
-  const renderBookshelves = bookshelves.map(bookshelf => {
+  const renderBookshelves = props.bookshelves.map(bookshelf => {
     return (
       <div key={bookshelf.id} className="ui relaxed divided list">
         <div className="item">
@@ -14,11 +16,11 @@ const Bookshelves = (props) => {
         </Link>
         <button
           className="ui negative basic button"
-          onClick={()=>deleteBookshelf(bookshelf.id)}
+          onClick={()=>props.deleteBookshelf(bookshelf.id)}
         >
           Delete
         </button>
-        <div class="ui divider"></div>
+        <div className="ui divider"></div>
         </div>
       </div>
     )
@@ -32,4 +34,10 @@ const Bookshelves = (props) => {
   )
 }
 
-export default Bookshelves
+const mapStateToProps = (state) => {
+  return {
+    bookshelves: state.bookshelves
+  }
+}
+
+export default connect(mapStateToProps, {deleteBookshelf} )(Bookshelves)

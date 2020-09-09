@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Bookshelves from './Bookshelves'
 import LocalStorageService from '../services/LocalStorageService'
+import { connect } from 'react-redux'
+import { addBookshelf, deleteBookshelf } from '../actions'
 
 import shortid from 'shortid'
 
-const CreateBookshelf = () => {
+const CreateBookshelf = (props) => {
+  console.log(localStorage)
+  console.log("create bookshelves->", props.bookshelves);
 
   const [bookshelf, setBookshelf] = useState('')
   const [bookshelfArray, setBookshelfArray] = useState([])
@@ -19,6 +23,7 @@ const CreateBookshelf = () => {
       id: shortid.generate(),
       name: bookshelf
     }
+    props.addBookshelf(bookshelvesObj)
     LocalStorageService.setItem(itemName, bookshelvesObj)
     setBookshelfArray(bookshelfArray => [...bookshelfArray, bookshelvesObj])
 
@@ -29,8 +34,8 @@ const CreateBookshelf = () => {
       setBookshelfArray(arr)
   }, [])
 
-  const handleRemoveBookshelf = (id) => {
-    const filtered = bookshelfArray.filter(bookshelf => id !== bookshelf.id)
+  const handleRemoveBookshelf = (bookshelf, id) => {
+    const filtered = props.deleteBookshelf(bookshelf, id)
     LocalStorageService.replace(itemName, filtered)
     setBookshelfArray(filtered)
   }
@@ -60,4 +65,16 @@ const CreateBookshelf = () => {
   )
 }
 
-export default CreateBookshelf
+const mapStateToProps = state => {
+  return {
+    bookshelves: state.bookshelves
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  {
+    addBookshelf,
+    deleteBookshelf
+  }
+)(CreateBookshelf)
