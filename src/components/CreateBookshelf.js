@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Bookshelves from './Bookshelves'
 import { useDispatch, useSelector } from 'react-redux'
-import { addBookshelf, deleteBookshelf } from '../actions'
+import { addBookshelf, loadBookshelfLS, deleteBookshelf } from '../actions'
 
 import shortid from 'shortid'
 
@@ -10,7 +10,6 @@ const CreateBookshelf = () => {
   const dispatch = useDispatch()
 
   const [bookshelf, setBookshelf] = useState('')
-  const [bookshelfArray, setBookshelfArray] = useState([])
 
   const handleAddNewBookshelf = () => {
     if(bookshelf === ''){
@@ -21,17 +20,14 @@ const CreateBookshelf = () => {
       name: bookshelf
     }
     dispatch(addBookshelf(bookshelvesObj))
-    setBookshelfArray(bookshelfArray => [...bookshelfArray, bookshelvesObj])
-
   }
 
   useEffect(()=> {
-      setBookshelfArray(bookshelves)
+      dispatch(loadBookshelfLS())
   }, [])
 
   const handleRemoveBookshelf = (bookshelf, id) => {
-    const filtered = dispatch(deleteBookshelf(bookshelf, id))
-    setBookshelfArray(filtered)
+    dispatch(deleteBookshelf(id))
   }
 
   return (
@@ -52,7 +48,7 @@ const CreateBookshelf = () => {
         </div>
       </div>
       <Bookshelves
-        bookshelves={bookshelfArray}
+        bookshelves={bookshelves}
         deleteBookshelf={handleRemoveBookshelf}
       />
     </div>

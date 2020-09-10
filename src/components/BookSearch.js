@@ -1,26 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import LocalStorageService from '../services/LocalStorageService'
-import axios from 'axios'
+import {useDispatch, useSelector} from 'react-redux'
+import { loadLibrary, addBook, clearLibrary } from '../actions'
 
 const BookSearch = ({shelfId}) => {
+  const library = useSelector(state=>state.library)
+  console.log(library);
+  const dispatch = useDispatch()
 
   const [query, setQuery] = useState('')
-  const [result, setResult] = useState([])
-
-  const itemName = "book"
 
   useEffect( () => {
     if (!query) {
       return
     }
-    const search = async () => {
-      const { data } = await axios.get(`/search/${query}`)
-      setResult(data.books)
-    }
-    search()
-  }, [query])
-
-
+    dispatch(loadLibrary(query))
+  }, [query, dispatch])
 
   const handleAddNewBook = (book) => {
     const newBook = {
@@ -30,12 +24,12 @@ const BookSearch = ({shelfId}) => {
       author: book.author,
       isbn: book.isbn13
     }
-    LocalStorageService.setItem(itemName, newBook)
+    dispatch(addBook(newBook))
+    dispatch(clearLibrary())
     setQuery('')
-    setResult([])
   }
 
-  const renderBooks = result.map(book => {
+  const renderBooks = library.map(book => {
     return (
       <div
         className="ui divided items"

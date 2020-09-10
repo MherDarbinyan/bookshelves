@@ -1,10 +1,8 @@
 export default (state = [], action) => {
   switch (action.type){
-    case 'ADD_BOOK':
-      return [...state, action.payload]
-    case 'LOAD_BOOKS':
+    case 'LOAD_LIBRARY':
       return action.payload
-    case 'DELETE_BOOK':
+    case 'CLEAR_LIBRARY':
       return action.payload
     default:
       return state

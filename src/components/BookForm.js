@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
-import LocalStorageService from '../services/LocalStorageService'
 import { useDispatch } from 'react-redux'
 import { addBook } from '../actions'
 
 const BookForm = (props) => {
   const dispatch = useDispatch()
-  const itemName = "book"
 
   const [bookInfo, setBookInfo] = useState({
     title: '',
@@ -29,7 +27,6 @@ const BookForm = (props) => {
       return
     }
     dispatch(addBook(bookInfo))
-    LocalStorageService.setItem(itemName, bookInfo)
   }
 
     return (

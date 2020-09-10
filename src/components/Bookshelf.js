@@ -1,33 +1,28 @@
 import React, { useState, useEffect } from 'react'
-import LocalStorageService from '../services/LocalStorageService'
+import { useDispatch, useSelector } from 'react-redux'
+import { loadBooksfLS, deleteBook, loadBookshelfLS } from '../actions'
 import { Link } from 'react-router-dom'
 
 const Bookshelf = (props) => {
 
-  const itemName = "book"
-  const itemCollection = "bookshelf"
   const shelfId = props.match.params.id
-
-  const [bookshelf, setBookshelf] = useState({})
-  const [books, setBooks] = useState([])
+  const bookshelfsss = useSelector(state=>state.bookshelves)
+  const bookshelf = useSelector(state=>state.bookshelves.find(item=>{
+    return item.id === shelfId
+  }))
+  console.log("bookshelf->", bookshelf);
+  const books = useSelector(state=>state.books.filter(item=>{
+    return item.shelfId === shelfId
+  }))
+  const dispatch = useDispatch()
 
   useEffect(()=> {
-      const arr = LocalStorageService.getItem(itemName).filter(book => book.shelfId === shelfId)
-      setBooks(arr)
-  }, [])
-
-  useEffect(()=>{
-    const getBookshelf = LocalStorageService.getItem(itemCollection)
-    const findBook =  getBookshelf.find(getBookshelf => getBookshelf.id === shelfId)
-    setBookshelf(findBook)
+    dispatch(loadBooksfLS())
+    dispatch(loadBookshelfLS())
   }, [])
 
 
-  const deleteBook = (isbn) => {
-    const deleted = books.filter(book => isbn !== book.isbn)
-    LocalStorageService.replace(itemName, deleted)
-    setBooks(deleted.filter(book => book.shelfId === shelfId))
-  }
+
 
   const renderBooks = books.map(book => {
     return (
@@ -43,7 +38,7 @@ const Bookshelf = (props) => {
         </div>
         <button
           className="ui button"
-          onClick={()=> deleteBook(book.isbn)}
+          onClick={()=> dispatch(deleteBook(book.isbn))}
         >
           Delete a book
         </button>
@@ -51,9 +46,12 @@ const Bookshelf = (props) => {
     )
   })
 
+  if (!bookshelf) {
+    return <div>...Loading</div>
+  }
   return (
     <div>
-      <h2>{bookshelf.name}</h2>
+    <h2>{bookshelf.name}</h2>
       {renderBooks}
       <div>
       <Link to={`/addbooks/${shelfId}`}>
