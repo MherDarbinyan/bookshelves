@@ -1,13 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { addBook } from '../actions'
+import {useDropzone} from 'react-dropzone'
+
 
 const BookForm = (props) => {
+
+
+  const onDrop = useCallback(acceptedFiles => {
+    console.log("acceptedFiles", acceptedFiles);
+    const reader = new FileReader()
+    reader.onload = () => {
+      const url = reader.result
+      setBookInfo((book)=>{
+        return {...book, image: url, imageName: acceptedFiles[0].name}
+      })
+      console.log(url)
+    }
+    reader.readAsDataURL(acceptedFiles[0])
+
+  }, [])
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+
+
   const dispatch = useDispatch()
 
   const [bookInfo, setBookInfo] = useState({
     title: '',
     image: '',
+    imageName: '',
     author: '',
     isbn: '',
     shelfId: props.shelfId
@@ -36,7 +57,22 @@ const BookForm = (props) => {
             <label>Title</label>
             <input type="text" name="title" onChange={handleChange} required/>
             <label>Image</label>
-            <input type="text" name="image" onChange={handleChange} required/>
+            <div
+              className="ui input"
+              style={{
+                border: '1px solid rgba(34,36,38,.15)',
+                borderRadius: '.28571429rem',
+                height:'40px'
+              }}
+                {...getRootProps()}
+              >
+              {bookInfo.image ? <p>{bookInfo.imageName}</p> : null}
+              <input
+
+                {...getInputProps()}
+                required
+              />
+            </div>
             <label>Author Name</label>
             <input type="text" name="author" onChange={handleChange} required/>
             <label>ISBN</label>
