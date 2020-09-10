@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { deleteBookshelf } from '../actions'
 
 const Bookshelves = () => {
+
   const bookshelves = useSelector(state=>state.bookshelves)
   const dispatch = useDispatch()
-  console.log("bookshelves->", bookshelves);
+
   const renderBookshelves = bookshelves.map(bookshelf => {
     return (
       <div key={bookshelf.id} className="ui relaxed divided list">
@@ -34,6 +35,5 @@ const Bookshelves = () => {
     </div>
   )
 }
-
 
 export default Bookshelves

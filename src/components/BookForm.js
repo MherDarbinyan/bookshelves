@@ -6,22 +6,18 @@ import {useDropzone} from 'react-dropzone'
 
 const BookForm = (props) => {
 
-
   const onDrop = useCallback(acceptedFiles => {
-    console.log("acceptedFiles", acceptedFiles);
     const reader = new FileReader()
     reader.onload = () => {
       const url = reader.result
       setBookInfo((book)=>{
         return {...book, image: url, imageName: acceptedFiles[0].name}
       })
-      console.log(url)
     }
     reader.readAsDataURL(acceptedFiles[0])
 
   }, [])
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-
 
   const dispatch = useDispatch()
 
@@ -66,12 +62,8 @@ const BookForm = (props) => {
               }}
                 {...getRootProps()}
               >
-              {bookInfo.image ? <p>{bookInfo.imageName}</p> : null}
-              <input
-
-                {...getInputProps()}
-                required
-              />
+              {bookInfo.image ? <p style={{lineHeight: '38px', paddingLeft: '15px'}}>{bookInfo.imageName}</p> : null}
+              <input {...getInputProps()} required />
             </div>
             <label>Author Name</label>
             <input type="text" name="author" onChange={handleChange} required/>

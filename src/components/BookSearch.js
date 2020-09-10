@@ -4,7 +4,6 @@ import { loadLibrary, addBook, clearLibrary } from '../actions'
 
 const BookSearch = ({shelfId}) => {
   const library = useSelector(state=>state.library)
-  console.log(library);
   const dispatch = useDispatch()
 
   const [query, setQuery] = useState('')

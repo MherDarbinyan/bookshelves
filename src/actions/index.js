@@ -64,7 +64,6 @@ export const loadLibrary = (query) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`/search/${query}`)
-      console.log(response);
       dispatch({
         type: 'LOAD_LIBRARY',
         payload: response.data.books

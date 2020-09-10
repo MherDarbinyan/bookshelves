@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadBooksfLS, deleteBook, loadBookshelfLS } from '../actions'
 import { Link } from 'react-router-dom'
@@ -6,11 +6,9 @@ import { Link } from 'react-router-dom'
 const Bookshelf = (props) => {
 
   const shelfId = props.match.params.id
-  const bookshelfsss = useSelector(state=>state.bookshelves)
   const bookshelf = useSelector(state=>state.bookshelves.find(item=>{
     return item.id === shelfId
   }))
-  console.log("bookshelf->", bookshelf);
   const books = useSelector(state=>state.books.filter(item=>{
     return item.shelfId === shelfId
   }))
@@ -20,9 +18,6 @@ const Bookshelf = (props) => {
     dispatch(loadBooksfLS())
     dispatch(loadBookshelfLS())
   }, [])
-
-
-
 
   const renderBooks = books.map(book => {
     return (
